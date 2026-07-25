@@ -8,9 +8,9 @@ export const GnnViewer: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const handleFileProcessed = (url: string, stats: any) => {
-    // Make sure we have the full URL if it's a relative path from the backend
-    const fullUrl = url.startsWith('http') ? url : `http://localhost:8000${url.startsWith('/') ? '' : '/'}${url}`;
-    setProcessedModelUrl(fullUrl);
+    // Route through Vite proxy: /processed/xxx.glb → /gnn-api/processed/xxx.glb
+    const proxyUrl = url.startsWith('/gnn-api') ? url : `/gnn-api${url.startsWith('/') ? '' : '/'}${url}`;
+    setProcessedModelUrl(proxyUrl);
     setPipelineStats(stats);
     setIsProcessing(false);
   };

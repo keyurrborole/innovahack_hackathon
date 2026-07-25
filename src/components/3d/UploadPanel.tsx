@@ -60,7 +60,7 @@ export const UploadPanel: React.FC<UploadPanelProps> = ({
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('http://localhost:8000/upload', {
+      const response = await fetch('/gnn-api/upload', {
         method: 'POST',
         body: formData,
       });

@@ -1,8 +1,11 @@
+# Core (required)
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 python-multipart>=0.0.6
-trimesh>=4.0.0
 numpy>=1.24.0
-torch>=2.0.0
-torch-geometric>=2.4.0
-scipy>=1.10.0
+
+# Optional: install for full format support (.glb/.stl/.ply)
+# pip install trimesh
+
+# Optional: install for real PyG GNN inference
+# pip install torch torch-geometric scipy

@@ -9,6 +9,13 @@ export default defineConfig(({ mode }) => ({
     host: "0.0.0.0",
     port: 5173,
     open: false,
+    proxy: {
+      "/gnn-api": {
+        target: "http://localhost:8001",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/gnn-api/, ""),
+      },
+    },
   },
   plugins: [
     react(),

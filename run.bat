@@ -103,9 +103,9 @@ echo   Launching servers...
 echo  ================================================================
 echo.
 
-REM --- Launch FastAPI GNN Backend (port 8000) ---
-echo [INFO] Starting FastAPI GNN backend on http://localhost:8000 ...
-start "Model X - GNN Backend (port 8000)" cmd /k "cd /d %~dp0 && call backend_gnn\venv\Scripts\activate.bat && python -m uvicorn backend_gnn.main:app --reload --host 0.0.0.0 --port 8000"
+REM --- Launch FastAPI GNN Backend (port 8001) ---
+echo [INFO] Starting FastAPI GNN backend on http://localhost:8001 ...
+start "Model X - GNN Backend (port 8001)" cmd /k "cd /d %~dp0 && python -m uvicorn backend_gnn.main:app --reload --host 0.0.0.0 --port 8001"
 
 REM --- Small delay to stagger the starts ---
 timeout /t 2 /nobreak >nul
@@ -119,8 +119,9 @@ echo  ================================================================
 echo   Both servers are starting in separate windows!
 echo.
 echo   Frontend:  http://localhost:5173/cryptoflow/gnn-viewer
-echo   Backend:   http://localhost:8000/health
-echo   API Docs:  http://localhost:8000/docs
+echo   Backend:   http://localhost:8001/health
+echo   API Docs:  http://localhost:8001/docs
+echo   (Frontend proxies /gnn-api/* -> backend via Vite)
 echo  ================================================================
 echo.
 echo  Press any key to close this launcher window...
