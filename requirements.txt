@@ -1,0 +1,7 @@
+# Vercel Python Serverless Function dependencies
+# These are installed automatically by Vercel during build
+
+fastapi>=0.104.0
+mangum>=0.17.0
+python-multipart>=0.0.6
+numpy>=1.24.0
