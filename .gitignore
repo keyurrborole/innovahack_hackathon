@@ -1,0 +1,91 @@
+# Environment
+.env
+.env.local
+.env.*.local
+DOC-*.env
+venv/
+env/
+.venv/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+/lib/
+/lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Dataset (large files)
+Backend/dataset/
+*.csv
+*.pt
+*.pth
+*.pkl
+*.h5
+*.hdf5
+
+# ML artifacts
+*.model
+*.onnx
+wandb/
+mlruns/
+lightning_logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (Frontend)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+*.log
+*.tmp
+*.temp
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+
+# GNN Pipeline - Local S3 Mock Storage
+local_s3_mock/raw_assets/*
+!local_s3_mock/raw_assets/.gitkeep
+local_s3_mock/processed_assets/*
+!local_s3_mock/processed_assets/.gitkeep
+local_s3_mock/graph_datasets/*
+!local_s3_mock/graph_datasets/.gitkeep
+
+# GNN Backend virtual environment
+backend_gnn/venv/

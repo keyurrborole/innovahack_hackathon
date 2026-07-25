@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FundFlow Trace | Bank fund flow tracking & fraud detection (PS3)</title>
+    <meta name="description" content="Prototype: map internal fund flows across accounts, products, branches, and channels. Graph analytics and ML for layering, round-tripping, structuring, dormancy, and profile mismatch—with FIU-oriented reporting." />
+    <meta name="author" content="FundFlow Trace" />
+
+    <meta property="og:title" content="FundFlow Trace | Bank fund flow tracking & fraud detection (PS3)" />
+    <meta property="og:description" content="Map internal fund flows; detect suspicious patterns with graph analytics and ML; support investigators and FIU evidence packages." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@smurfpakad" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="./favicon/favicon.ico" />
+
+    <!-- Font preloads -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+
+  <body>
+    <div id="error-log" style="color: red; position: fixed; top: 0; left: 0; z-index: 9999; background: white; padding: 20px; max-height: 100vh; overflow-y: auto;"></div>
+    <script>
+      window.onerror = function(msg, url, line, col, error) {
+        document.getElementById('error-log').innerHTML += '<p><strong>Error:</strong> ' + msg + '<br/>Location: ' + url + ':' + line + ':' + col + '<br/>' + (error && error.stack ? error.stack.replace(/\\n/g, '<br/>') : '') + '</p>';
+      };
+      window.addEventListener('unhandledrejection', function(event) {
+        document.getElementById('error-log').innerHTML += '<p><strong>Unhandled Promise:</strong> ' + (event.reason ? event.reason.toString() : 'Unknown reason') + '<br/>' + (event.reason && event.reason.stack ? event.reason.stack.replace(/\\n/g, '<br/>') : '') + '</p>';
+      });
+    </script>
+    <div id="root"></div>
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <!-- <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script> -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

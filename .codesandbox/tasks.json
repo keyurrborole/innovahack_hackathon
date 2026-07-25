@@ -1,0 +1,27 @@
+{
+  "setupTasks": [
+    {
+      "name": "install frontend deps",
+      "command": "npm install"
+    },
+    {
+      "name": "setup backend venv",
+      "command": "cd Backend && python3 -m venv .venv && . .venv/bin/activate && python -m pip install --upgrade pip setuptools wheel && pip install torch numpy pandas scikit-learn matplotlib networkx fastapi uvicorn[standard] pydantic pydantic-settings python-multipart python-jose[cryptography] passlib[bcrypt] httpx supabase openpyxl xlsxwriter reportlab aiofiles python-dotenv && (pip install torch-geometric || echo 'torch-geometric install skipped; backend will run with reduced ML features')"
+    }
+  ],
+  "tasks": [
+    {
+      "name": "frontend",
+      "command": "npm run dev -- --host 0.0.0.0 --port 5173 --strictPort",
+      "runAtStart": true,
+      "preview": {
+        "port": 5173
+      }
+    },
+    {
+      "name": "backend",
+      "command": "cd Backend && . .venv/bin/activate && python -m uvicorn main:app --host 0.0.0.0 --port 8000 --http h11 --proxy-headers --forwarded-allow-ips='*'",
+      "runAtStart": true
+    }
+  ]
+}
