@@ -2,8 +2,8 @@
 
 // In CodeSandbox/Vite, configure this in `.env` as:
 // VITE_API_BASE_URL=https://<your-backend-host>
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8000").replace(/\/$/, "");
-const API_V1 = `${API_BASE_URL}/api/v1`;
+const API_BASE_URL = "";
+const API_V1 = `/api/v1`;
 
 export type User = {
   id?: string;

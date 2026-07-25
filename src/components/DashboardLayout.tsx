@@ -7,12 +7,12 @@ import {
   Network, 
   FileText, 
   Settings, 
-  User,
   LogOut,
   Menu,
   X,
   Sun,
-  Moon
+  Moon,
+  Zap
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -25,7 +25,8 @@ interface DashboardLayoutProps {
 
 const navigation = [
   { name: "Dashboard", href: "/cryptoflow/dashboard", icon: LayoutDashboard },
-  { name: "Ingest data", href: "/cryptoflow/upload", icon: Upload },
+  { name: "Upload Transactions", href: "/cryptoflow/upload", icon: Upload },
+  { name: "Subscription Leaks", href: "/cryptoflow/subscriptions", icon: Zap },
   { name: "Analysis", href: "/cryptoflow/analysis", icon: BarChart3 },
   { name: "Fund flow graph", href: "/cryptoflow/graph", icon: Network },
   { name: "Branch heatmap", href: "/cryptoflow/heatmap", icon: Grid3X3 },

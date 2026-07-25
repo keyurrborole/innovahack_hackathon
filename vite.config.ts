@@ -15,6 +15,10 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/gnn-api/, ""),
       },
+      "/api": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
     },
   },
   plugins: [

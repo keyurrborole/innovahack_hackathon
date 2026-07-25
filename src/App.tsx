@@ -19,6 +19,7 @@ import Patterns from "./pages/Patterns";
 import Benchmarks from "./pages/Benchmarks";
 import Heatmap from "./pages/Heatmap";
 import AuthCallback from "./pages/AuthCallback";
+import SubscriptionLeaks from "./pages/SubscriptionLeaks";
 const GnnViewer = lazy(() => import("./pages/GnnViewer"));
 
 const queryClient = new QueryClient();
@@ -77,6 +78,11 @@ const App = () => (
           <Route path="/cryptoflow/benchmarks" element={
             <ProtectedRoute>
               <Benchmarks />
+            </ProtectedRoute>
+          } />
+          <Route path="/cryptoflow/subscriptions" element={
+            <ProtectedRoute>
+              <SubscriptionLeaks />
             </ProtectedRoute>
           } />
           <Route path="/cryptoflow/gnn-viewer" element={
