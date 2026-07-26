@@ -9,18 +9,14 @@ import {
   DialogTrigger,
 } from './ui/dialog';
 import { LogIn, User, LogOut, Loader2 } from 'lucide-react';
-import { authApi, type User as UserType } from '../lib/api';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+const GOOGLE_CLIENT_ID = '341547498123-g9l1ichk7itcceh6g2ab6app7fb3s2t1.apps.googleusercontent.com';
 
-// Only Google OAuth (simplified per requirements)
-const OAUTH_PROVIDERS = [
-  { name: 'Google', icon: '🔍', color: 'bg-white hover:bg-gray-100 text-gray-900' },
-];
-
-const AuthButton = () => {
+const AuthButtonContent = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ name: string; email: string; picture?: string } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // Check for stored user on mount
@@ -33,84 +29,58 @@ const AuthButton = () => {
         localStorage.removeItem('user');
       }
     }
-    
-    // Check for OAuth callback code in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
-    if (code) {
-      handleOAuthCallback(code);
-    }
   }, []);
 
-  const handleOAuthCallback = async (code: string) => {
+  const handleGoogleSuccess = (credentialResponse: any) => {
     setIsLoading(true);
     try {
-      const response = await authApi.handleCallback(code, 'google');
-      const userData = {
-        name: response.user.name,
-        email: response.user.email,
-      };
-      setUser(userData);
-      localStorage.setItem('user', JSON.stringify(userData));
-      localStorage.setItem('authToken', response.access_token);
-      
-      // Clean up URL
-      window.history.replaceState({}, '', window.location.pathname);
-      
-      // Redirect to dashboard
-      window.location.href = '/cryptoflow/dashboard';
+      if (credentialResponse.credential) {
+        // Decode the JWT to get user info
+        const decoded: any = jwtDecode(credentialResponse.credential);
+        const userData = {
+          name: decoded.name,
+          email: decoded.email,
+          picture: decoded.picture,
+        };
+        
+        // Store in state and localStorage
+        setUser(userData);
+        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem('authToken', credentialResponse.credential);
+        
+        setIsOpen(false);
+        // Redirect to dashboard
+        window.location.href = '/cryptoflow/dashboard';
+      }
     } catch (error) {
-      console.error('OAuth callback error:', error);
+      console.error('Google login processing error:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleOAuthLogin = async (provider: string) => {
-    setIsLoading(true);
-    try {
-      // Get the authorization URL from backend
-      const response = await authApi.getGoogleAuthUrl();
-      // Redirect to the authorization URL
-      window.location.href = response.authorization_url;
-    } catch (error) {
-      console.error('OAuth login error:', error);
-      // Fallback: simulate login for development
-      const mockUser = {
-        name: 'Demo User',
-        email: 'demo@smurfpakad.ai'
-      };
-      setUser(mockUser);
-      localStorage.setItem('user', JSON.stringify(mockUser));
-      localStorage.setItem('authToken', 'mock_jwt_token_' + Date.now());
-      setIsOpen(false);
-      window.location.href = '/cryptoflow/dashboard';
-    } finally {
-      setIsLoading(false);
-    }
+  const handleGoogleError = () => {
+    console.error('Google Login Failed');
   };
 
   const handleLogout = async () => {
     setIsLoading(true);
-    try {
-      await authApi.logout();
-    } catch (error) {
-      // Still clear local state even if API call fails
-      console.error('Logout error:', error);
-    } finally {
-      setUser(null);
-      localStorage.removeItem('user');
-      localStorage.removeItem('authToken');
-      setIsLoading(false);
-      window.location.href = '/cryptoflow';
-    }
+    setUser(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('authToken');
+    setIsLoading(false);
+    window.location.href = '/cryptoflow';
   };
 
   if (user) {
     return (
       <div className="flex items-center gap-3">
         <div className="hidden md:flex items-center gap-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-4 py-2">
-          <User className="h-4 w-4 text-crypto-purple" />
+          {user.picture ? (
+            <img src={user.picture} alt={user.name} className="h-6 w-6 rounded-full" />
+          ) : (
+            <User className="h-4 w-4 text-crypto-purple" />
+          )}
           <span className="text-sm text-white">{user.name}</span>
         </div>
         <Button
@@ -145,27 +115,18 @@ const AuthButton = () => {
             Welcome to FundFlow Trace
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Sign in with your preferred provider to access advanced features
+            Sign in with Google to access advanced features
           </DialogDescription>
         </DialogHeader>
         
-        <div className="space-y-3 mt-6">
-          {OAUTH_PROVIDERS.map((provider) => (
-            <Button
-              key={provider.name}
-              onClick={() => handleOAuthLogin(provider.name)}
-              disabled={isLoading}
-              className={`w-full ${provider.color} transition-all duration-200`}
-              size="lg"
-            >
-              {isLoading ? (
-                <Loader2 className="h-5 w-5 mr-3 animate-spin" />
-              ) : (
-                <span className="text-2xl mr-3">{provider.icon}</span>
-              )}
-              <span className="font-medium">Continue with {provider.name}</span>
-            </Button>
-          ))}
+        <div className="flex justify-center mt-6 py-4">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            theme="filled_black"
+            shape="pill"
+            size="large"
+          />
         </div>
 
         <div className="mt-6 text-center">
@@ -182,6 +143,14 @@ const AuthButton = () => {
         </div>
       </DialogContent>
     </Dialog>
+  );
+};
+
+const AuthButton = () => {
+  return (
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <AuthButtonContent />
+    </GoogleOAuthProvider>
   );
 };
 
