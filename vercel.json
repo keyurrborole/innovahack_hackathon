@@ -3,6 +3,13 @@
   "outputDirectory": "dist",
   "installCommand": "npm install",
   "framework": "vite",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/cryptoflow",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/gnn-api/(.*)",

@@ -4,7 +4,7 @@ import { fileURLToPath, URL } from "node:url";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-    base: "/cryptoflow/",
+    base: "/",
   server: {
     host: "0.0.0.0",
     port: 5173,
