@@ -86,11 +86,13 @@ def _parse_csv_transactions(content: str) -> list[dict]:
 
 # ── Endpoints ─────────────────────────────────────────────────────────────────
 @app.get("/health")
+@app.get("/gnn-api/health")
 def health():
     return {"status": "healthy", "service": "subscription-leak-detector", "version": "1.0.0"}
 
 
 @app.post("/analyse")
+@app.post("/gnn-api/analyse")
 async def analyse_statement(file: UploadFile = File(...)):
     """
     Upload a bank statement (CSV/TXT/TSV) and detect subscription leaks.
