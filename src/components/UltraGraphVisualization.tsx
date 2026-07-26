@@ -413,7 +413,7 @@ const UltraGraphVisualization = ({ data }: UltraGraphProps) => {
     }
     
     const resizeObserver = new ResizeObserver(entries => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         const newWidth = entry.contentRect.width;
         if (newWidth > 0) {
           setDimensions({ width: newWidth, height: 600 });
