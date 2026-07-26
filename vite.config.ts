@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    chunkSizeWarningLimit: 3000,
     rollupOptions: {
       output: {
         entryFileNames: 'index.js',
@@ -43,6 +44,10 @@ export default defineConfig(({ mode }) => ({
             return 'index.css';
           }
           return 'asset-[name][extname]';
+        },
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom', 'lucide-react'],
+          ui: ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-popover', '@radix-ui/react-slot', '@radix-ui/react-tabs']
         },
       },
     },
